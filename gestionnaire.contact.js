@@ -33,53 +33,60 @@ function SaisieListeContact() {
   });
 }
 
+// Appeler la fonction pour saisir la liste de contacts au début du programme
+SaisieListeContact();
+
 function ajouterContact() {
-  let Nom = prompt("Entrez le nom de la personne :");
-  let Prenom = prompt("Entrez le Prénom de la personne :");
-  let NumeroTelephone = prompt("Entrez le numéro de téléphone");
+  rl.question("Entrez le nom de la personne : ", (Nom) => {
+    rl.question("Entrez le prénom de la personne : ", (prenom) => {
+      rl.question("Entrez le numéro de téléphone : ", (NumeroTelephone) => {
+        // Créez un nouvel objet contact avec les informations saisies
+        let nouvelContact = { Nom, prenom, NumeroTelephone };
 
-  let nouvelContact = { Nom, Prenom, NumeroTelephone };
+        // Ajoutez l'objet contact à la liste
+        listeContacts.push(nouvelContact);
 
-  listeContacts.push(nouvelContact);
+        // Affichez la liste mise à jour
+        console.log("Liste de Contacts mise à jour :");
+        console.log(listeContacts);
 
-  console.log("Liste de Contacts mise à jour :");
-  console.log(listeContacts);
-
-  // Appeler la fonction pour supprimer un contact après avoir ajouté un contact
-  supprimeContact();
+        // Fermez l'interface readline
+        rl.close();
+      });
+    });
+  });
 }
 
 function supprimeContact() {
-  let Nom = prompt("Entrez le nom de la personne à supprimer :");
-  let Prenom = prompt("Entrez le Prénom de la personne à supprimer :");
-  let NumeroTelephone = prompt("Entrez le numéro de téléphone de la personne à supprimer :");
+  rl.question("Entrez le nom de la personne à supprimer : ", (Nom) => {
+    rl.question("Entrez le prénom de la personne : ", (prenom) => {
+      rl.question("Entrez le numéro de téléphone : ", (NumeroTelephone) => {
+        // Créez un nouvel objet contact avec les informations saisies
+        let AncienneContact = { Nom, prenom, NumeroTelephone };
 
-  // Créer un nouvel objet
-  let contactASupprimer = { Nom, Prenom, NumeroTelephone };
+        // Recherchez l'index de l'ancien contact dans la liste
+        const index = listeContacts.findIndex((contact) =>
+          contact.Nom === AncienneContact.Nom &&
+          contact.prenom === AncienneContact.prenom &&
+          contact.NumeroTelephone === AncienneContact.NumeroTelephone
+        );
 
-  // Recherchez l'indice de l'objet dans la liste
-  const index = listeContacts.findIndex((contact) => {
-    return (
-      contact.Nom === contactASupprimer.Nom &&
-      contact.Prenom === contactASupprimer.Prenom &&
-      contact.NumeroTelephone === contactASupprimer.NumeroTelephone
-    );
+        if (index !== -1) {
+          // Supprimez l'ancien contact de la liste
+          listeContacts.splice(index, 1);
+
+          // Affichez la liste mise à jour
+          console.log("Liste de Contacts mise à jour :");
+          console.log(listeContacts);
+        } else {
+          console.log("Le contact n'a pas été trouvé.");
+        }
+
+        // Fermez l'interface readline
+        rl.close();
+      });
+    });
   });
-
-  // Si l'objet est trouvé, supprimez-le
-  if (index !== -1) {
-    listeContacts.splice(index, 1);
-    console.log("Contact supprimé avec succès.");
-  } else {
-    console.log("Contact non trouvé.");
-  }
-
-  // Afficher la liste mise à jour
-  console.log("Liste de Contacts mise à jour :");
-  console.log(listeContacts);
 }
-
-// Appeler la fonction pour saisir la liste de contacts au début du programme
-SaisieListeContact()
 
 
