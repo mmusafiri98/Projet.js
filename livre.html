@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>livre en ligne</title>
+</head>
+
+<body>
+    <script>
+        // Array per memorizzare i libri nella tabella library
+        let library = [];
+        
+        // Funzione per aggiungere un libro
+        function addBook(titre, auteur, annee, price) {
+            const book = { titre, auteur, annee, price };  // Aggiungi il prezzo qui
+            library.push(book);
+        }
+
+        // Funzione per visualizzare i libri
+        function displayBooks() {
+            // Parcours du tableau library avec la boucle forEach
+            library.forEach(book => {
+                alert(`Title: ${book.titre}, Auteur: ${book.auteur}, Annee: ${book.annee}, Price: €${book.price}`);
+            });
+        }
+
+        // Funzione per rimuovere un libro e restituirlo
+        function removeBook(titre, auteur, annee) {
+            const index = library.findIndex(book => book.titre === titre && book.auteur === auteur && book.annee === annee);
+
+            if (index !== -1) {
+                return library.splice(index, 1)[0];
+            }
+
+            return null;
+        }
+
+        // Funzione per cercare un libro
+        function searchBook(titre, auteur, annee) {
+            if (library.length === 0) {
+                return null;
+            }
+
+            for (let i = 0; i < library.length; i++) {
+                if (library[i].titre === titre && library[i].auteur === auteur && library[i].annee === annee) {
+                    return library[i];
+                }
+            }
+            return null;
+        }
+
+        // Funzione per ottenere il prezzo di un libro basato su titolo e autore
+        function getPrice(titre, auteur) {
+            // Cerca il libro nella libreria con la funzione find
+            const book = library.find(book => book.titre === titre && book.auteur === auteur);
+            // Se il libro viene trovato, restituisce il prezzo
+            if (book) {
+                return book.price;  // Accesso corretto alla proprietà price
+            } else {
+                return 'Libro non trovato';  // Libro non trovato
+            }
+        }
+
+        // Aggiungi alcuni libri tramite la funzione addBook e vengono visualizzati i prezzi di ogni libro
+        addBook('Il Signore degli Anelli', 'J.R.R. Tolkien', 1954, 29.99);
+        addBook('1984', 'George Orwell', 1949, 30);
+        addBook('Il bambino che cade nel pozzo', 'George Micheal', 1979, 49.55);
+        addBook('Il villaggio nascosto', 'Micheal Keaton', 2004, 50);
+        addBook('Il Cavallo del buio', 'Micheal Carles', 2009, 69.99);
+        addBook('Il villaggio del bel vedere', 'Charles Bills', 2010, 20);
+
+        // Ottieni il prezzo di un libro
+        const price1 = getPrice('Il Signore degli Anelli', 'J.R.R. Tolkien');
+        alert(`Il prezzo de 'Il Signore degli Anelli' è: €${price1}`);
+        const price2 = getPrice('1984', 'George Orwell');
+        alert(`Il prezzo di '1984' è: €${price2}`);
+        const price3 = getPrice('Il bambino che cade nel pozzo', 'George Micheal');
+        alert(`Il prezzo de 'Il bambino che cade nel pozzo' è: €${price3}`);
+        const price4 = getPrice('Il villaggio nascosto', 'Micheal Keaton');
+        alert(`Il prezzo de 'Il villaggio nascosto' è: €${price4}`);
+        const price5 = getPrice('Il Cavallo del buio', 'Micheal Carles');
+        alert(`Il prezzo de 'Il Cavallo del buio' è: €${price5}`);
+        const price6 = getPrice('Il villaggio del bel vedere', 'Charles Bills');
+        alert(`Il prezzo de 'Il villaggio del bel vedere' è: €${price6}`);
+
+        // Visualizza i libri
+        displayBooks();
+
+        // Rimuovi un libro con il titolo, l'autore e l'anno
+        const deleteBook = removeBook('1984', 'George Orwell', 1949);
+        if (deleteBook) {
+            alert(`Book deleted: Title: ${deleteBook.titre}, Auteur: ${deleteBook.auteur}, Annee: ${deleteBook.annee}`);
+        } else {
+            alert('Book not found for deletion');
+        }
+
+        // Cerca un libro contenente il titolo e l'autore
+        const foundBook = searchBook('Il Signore degli Anelli', 'J.R.R. Tolkien', 1954);
+        if (foundBook) {
+            alert(`Book found: Title: ${foundBook.titre}, Auteur: ${foundBook.auteur}, Annee: ${foundBook.annee}`);
+        } else {
+            alert('Book not found');
+        }
+
+        // Visualizza i libri aggiornati
+        displayBooks();
+    </script>
+</body>
+
+</html>
