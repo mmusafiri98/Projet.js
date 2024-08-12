@@ -5,107 +5,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>livre en ligne</title>
+    <style>
+        h1 {
+            background-position: center;
+            background-color: #fff;
+        }
+
+        body {
+            background-image: url('livre.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>libri online</h1>
+    <button id="addBookBtn">Aggiungi Libro</button>
+    <button id="displayBooksBtn">Visualizza Libri</button>
+    <button id="removeBooksBtn">Rimuovi Libri</button>
+    <button id="searchBooksBtn">Cerca Libri</button>
+    <button id="removeGenreBtn">Rimozione dei generi</button>
+
     <script>
-        // Array per memorizzare i libri nella tabella library
+        //creazione di una lista contenante i libri
         let library = [];
-        
-        // Funzione per aggiungere un libro
-        function addBook(titre, auteur, annee, price) {
-            const book = { titre, auteur, annee, price };  // Aggiungi il prezzo qui
+        //funzione per aggiungere un libri in base a l autore e titolo e anno 
+        //E prezzo e genere 
+        const addBook = (titre, auteur, annee, price, genre) => {
+            const book = { titre, auteur, annee, price, genre };
             library.push(book);
-        }
-
-        // Funzione per visualizzare i libri
-        function displayBooks() {
-            // Parcours du tableau library avec la boucle forEach
+        };
+        //funzione per visualizzare i libri
+        const displayBooks = () => {
             library.forEach(book => {
-                alert(`Title: ${book.titre}, Auteur: ${book.auteur}, Annee: ${book.annee}, Price: €${book.price}`);
+                //Affichage de libri con le loro proprieta come titolo e autore e anno e prezzo e genere 
+                alert(`Title: ${book.titre}, Auteur: ${book.auteur}, Annee: ${book.annee}, Price: €${book.price}, genre: ${book.genre}`);
             });
-        }
-
-        // Funzione per rimuovere un libro e restituirlo
-        function removeBook(titre, auteur, annee) {
-            const index = library.findIndex(book => book.titre === titre && book.auteur === auteur && book.annee === annee);
-
-            if (index !== -1) {
-                return library.splice(index, 1)[0];
-            }
-
-            return null;
-        }
-
-        // Funzione per cercare un libro
-        function searchBook(titre, auteur, annee) {
-            if (library.length === 0) {
-                return null;
-            }
-
-            for (let i = 0; i < library.length; i++) {
-                if (library[i].titre === titre && library[i].auteur === auteur && library[i].annee === annee) {
-                    return library[i];
+        };
+        //funzione per rimuovere i libri
+        const removeBooks = (booksToRemove) => {
+            //ceazione di una lista vuota per rimuovere i libri
+            let deletedBooks = [];
+            //ciclo per rimuovere i libri con la funzione findIndex per trovare l indizi dei libri con le loro proprieta
+            booksToRemove.forEach(bookToRemove => {
+                const index = library.findIndex(book => book.titre === bookToRemove.titre && book.auteur === bookToRemove.auteur && book.annee === bookToRemove.annee);
+                //se vengono trovate
+                if (index !== -1) {
+                    //la variabile deleteBook est assignata a rimuovere il contenuto nella lista library
+                    //con il metodo splice
+                    const deletedBook = library.splice(index, 1)[0];
+                    //puoi la lista deletedBooks viene aggiunta a la variabile deleteBook con i libri eliminati 
+                    deletedBooks.push(deletedBook);
                 }
-            }
-            return null;
-        }
+            });
+            return deletedBooks;
+        };
+        //funzione per cercare il  libro  
+        const searchBook = (booksToFound) => {
+            //creazione di una lista vuota per trovare i libri 
+            let foundBooks = [];
+            booksToFound.forEach(bookToFound => {
+                const index = library.findIndex(book => book.titre === bookToFound.titre && book.auteur === bookToFound.auteur && book.annee === bookToFound.annee);
+                if (index !== -1) {
+                    const foundBook = library[index];
+                    foundBooks.push(foundBook);
+                }
+            });
+            return foundBooks;
+        };
+        //funzione per rimuovre i generi
+        const removeGenre = (library) => {
+            //creazione di una lista vuota per rimuovere i genere 
+            let BooksGenreRemoved = [];
+            //percorso per rimuovere i genere nella tabella library
+            library.forEach(bookToGenre => {
+                //rimozione dei generi 
+                delete bookToGenre.genre;
+                //e aggiunta dei generi eliminati nella lista BooksGenreRemoved
+                BooksGenreRemoved.push(bookToGenre);
+            });
 
-        // Funzione per ottenere il prezzo di un libro basato su titolo e autore
-        function getPrice(titre, auteur) {
-            // Cerca il libro nella libreria con la funzione find
+            return BooksGenreRemoved;
+        }
+        //Funzione per ottenere il prezzo
+        const getPrice = (titre, auteur) => {
             const book = library.find(book => book.titre === titre && book.auteur === auteur);
-            // Se il libro viene trovato, restituisce il prezzo
             if (book) {
-                return book.price;  // Accesso corretto alla proprietà price
+                return book.price;
             } else {
-                return 'Libro non trovato';  // Libro non trovato
+                return 'Libro non trovato';
             }
-        }
+        };
 
-        // Aggiungi alcuni libri tramite la funzione addBook e vengono visualizzati i prezzi di ogni libro
-        addBook('Il Signore degli Anelli', 'J.R.R. Tolkien', 1954, 29.99);
-        addBook('1984', 'George Orwell', 1949, 30);
-        addBook('Il bambino che cade nel pozzo', 'George Micheal', 1979, 49.55);
-        addBook('Il villaggio nascosto', 'Micheal Keaton', 2004, 50);
-        addBook('Il Cavallo del buio', 'Micheal Carles', 2009, 69.99);
-        addBook('Il villaggio del bel vedere', 'Charles Bills', 2010, 20);
+        document.getElementById('addBookBtn').addEventListener('click', () => {
+            addBook("Le Petit Prince", "Antoine de Saint-Exupéry", 2021, 19.99, "fantasy");
+            addBook("1984", "George Orwell", 1997, 29.99, "Action");
+            addBook("Il villaggio nascosto", 'Micheal Keaton', 2004, 39.99, "romantique");
+            addBook("il  Principe", "Antoine de Saint-Exupéry", 2023, 29.99, "fantasy");
+            addBook("il calciatore pigro", "George Orwell", 1997, 49.99, "romantique");
+            addBook("Il principe cerca moglie", 'Micheal Keaton', 2004, 39.99, "romantique");
+        });
 
-        // Ottieni il prezzo di un libro
-        const price1 = getPrice('Il Signore degli Anelli', 'J.R.R. Tolkien');
-        alert(`Il prezzo de 'Il Signore degli Anelli' è: €${price1}`);
-        const price2 = getPrice('1984', 'George Orwell');
-        alert(`Il prezzo di '1984' è: €${price2}`);
-        const price3 = getPrice('Il bambino che cade nel pozzo', 'George Micheal');
-        alert(`Il prezzo de 'Il bambino che cade nel pozzo' è: €${price3}`);
-        const price4 = getPrice('Il villaggio nascosto', 'Micheal Keaton');
-        alert(`Il prezzo de 'Il villaggio nascosto' è: €${price4}`);
-        const price5 = getPrice('Il Cavallo del buio', 'Micheal Carles');
-        alert(`Il prezzo de 'Il Cavallo del buio' è: €${price5}`);
-        const price6 = getPrice('Il villaggio del bel vedere', 'Charles Bills');
-        alert(`Il prezzo de 'Il villaggio del bel vedere' è: €${price6}`);
+        document.getElementById('displayBooksBtn').addEventListener('click', displayBooks);
 
-        // Visualizza i libri
-        displayBooks();
+        document.getElementById('removeBooksBtn').addEventListener('click', () => {
+            const booksToRemove = [{ titre: '1984', auteur: 'George Orwell', annee: 1997 }];
+            const deletedBooks = removeBooks(booksToRemove);
+            deletedBooks.forEach(deletedBook => {
+                alert(`Book deleted: Title: ${deletedBook.titre}, Auteur: ${deletedBook.auteur}, Annee: ${deletedBook.annee}`);
+            });
+        });
 
-        // Rimuovi un libro con il titolo, l'autore e l'anno
-        const deleteBook = removeBook('1984', 'George Orwell', 1949);
-        if (deleteBook) {
-            alert(`Book deleted: Title: ${deleteBook.titre}, Auteur: ${deleteBook.auteur}, Annee: ${deleteBook.annee}`);
-        } else {
-            alert('Book not found for deletion');
-        }
+        document.getElementById('searchBooksBtn').addEventListener('click', () => {
+            const booksToFound = [{ titre: 'Il villaggio nascosto', auteur: 'Micheal Keaton', annee: 2004 }];
+            const foundBooks = searchBook(booksToFound);
+            foundBooks.forEach(foundBook => {
+                alert(`found : Title: ${foundBook.titre}, Auteur: ${foundBook.auteur}, Annee: ${foundBook.annee}`);
+            });
+        });
 
-        // Cerca un libro contenente il titolo e l'autore
-        const foundBook = searchBook('Il Signore degli Anelli', 'J.R.R. Tolkien', 1954);
-        if (foundBook) {
-            alert(`Book found: Title: ${foundBook.titre}, Auteur: ${foundBook.auteur}, Annee: ${foundBook.annee}`);
-        } else {
-            alert('Book not found');
-        }
-
-        // Visualizza i libri aggiornati
-        displayBooks();
+        document.getElementById('removeGenreBtn').addEventListener('click', () => {
+            const booksToGenreRemoved = library.slice(); // Copia della library
+            const genreRemoved = removeGenre(booksToGenreRemoved);
+            genreRemoved.forEach(book => {
+                alert(`Book removed: Title: ${book.titre}, Auteur: ${book.auteur}, Annee: ${book.annee}, Genre: ${book.genre}`);
+            });
+        });
     </script>
 </body>
 
