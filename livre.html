@@ -16,11 +16,26 @@
             background-size: cover;
             background-repeat: no-repeat;
         }
+
+        #title {
+            width: 600px;
+            height: 100px;
+            background-color: lightblue;
+            color: black;
+            text-align: center;
+            line-height: 100px;
+            border: 2px solid black;
+        }
     </style>
 </head>
 
 <body>
-    <h1>libri online</h1>
+    <h1 id="title">libri online</h1>
+    <input type="text" id="monInput" placeholder="Tapez quelque chose">
+    <button id="monBouton">Afficher</button>
+    <p id="affichage"></p>
+    <button id="changerStyle">Changer le style du titre libri online</button>
+    <button id="rewatchStyle">rewatchStyle du titre libri online</button>
     <button id="addBookBtn">Aggiungi Libro</button>
     <button id="displayBooksBtn">Visualizza Libri</button>
     <button id="removeBooksBtn">Rimuovi Libri</button>
@@ -90,14 +105,17 @@
         }
         //Funzione per ottenere il prezzo
         const getPrice = (titre, auteur) => {
+            //creazione di una variabile per ottenere il prezzo in base a titolo e autore
             const book = library.find(book => book.titre === titre && book.auteur === auteur);
+            //condizione per ottenere il prezzo
+            //se il libro e trovato si restituisce il prezzo altrimenti restituisce un messaggio di errore
             if (book) {
                 return book.price;
             } else {
                 return 'Libro non trovato';
             }
         };
-
+        //Aggiunta di libri graze ai bottoni con il clic sul bottone
         document.getElementById('addBookBtn').addEventListener('click', () => {
             addBook("Le Petit Prince", "Antoine de Saint-Exupéry", 2021, 19.99, "fantasy");
             addBook("1984", "George Orwell", 1997, 29.99, "Action");
@@ -106,9 +124,9 @@
             addBook("il calciatore pigro", "George Orwell", 1997, 49.99, "romantique");
             addBook("Il principe cerca moglie", 'Micheal Keaton', 2004, 39.99, "romantique");
         });
-
+        //visualizzazione dei libri tramite il click sul bottone 
         document.getElementById('displayBooksBtn').addEventListener('click', displayBooks);
-
+        //rimozione dei libri tramite il click sul bottone
         document.getElementById('removeBooksBtn').addEventListener('click', () => {
             const booksToRemove = [{ titre: '1984', auteur: 'George Orwell', annee: 1997 }];
             const deletedBooks = removeBooks(booksToRemove);
@@ -116,7 +134,7 @@
                 alert(`Book deleted: Title: ${deletedBook.titre}, Auteur: ${deletedBook.auteur}, Annee: ${deletedBook.annee}`);
             });
         });
-
+        //ricerca dei libri tramite il click sul bottone
         document.getElementById('searchBooksBtn').addEventListener('click', () => {
             const booksToFound = [{ titre: 'Il villaggio nascosto', auteur: 'Micheal Keaton', annee: 2004 }];
             const foundBooks = searchBook(booksToFound);
@@ -124,7 +142,7 @@
                 alert(`found : Title: ${foundBook.titre}, Auteur: ${foundBook.auteur}, Annee: ${foundBook.annee}`);
             });
         });
-
+        //rimozione dei generi grazie al bottone rimozione 
         document.getElementById('removeGenreBtn').addEventListener('click', () => {
             const booksToGenreRemoved = library.slice(); // Copia della library
             const genreRemoved = removeGenre(booksToGenreRemoved);
@@ -132,6 +150,39 @@
                 alert(`Book removed: Title: ${book.titre}, Auteur: ${book.auteur}, Annee: ${book.annee}, Genre: ${book.genre}`);
             });
         });
+        const id = document.getElementById('title');
+        id.textContent = "libri online disponibili";
+        const bouton = document.getElementById('changerStyle');
+        const bouton2 = document.getElementById('rewatchStyle');
+        const element = document.getElementById('title');
+
+        // Ajouter un écouteur d'événement au bouton pour changer les styles au clic
+        bouton.addEventListener('click', function () {
+            // Modifier les styles CSS de l'élément
+            element.style.backgroundColor = 'orange';
+            element.style.color = 'white';
+            element.style.fontSize = '30px';
+            element.style.borderRadius = '15px';
+            element.style.border = '40px dashed red';
+        });
+        bouton2.addEventListener('click', function () {
+            // Modifier les styles CSS de l'élément
+            element.style.backgroundColor = " lightblue";
+            element.style.width = '600px';
+            element.style.height = '100px';
+            element.style.color = 'black';
+            element.style.textAlign = 'center';
+            element.style.border = "2px solid black";
+            element.style.lineHeight = "100px";
+        });
+
+        const bouton3 = document.getElementById('monBouton');
+        // Ajouter un écouteur d'événement au bouton pour afficher une alerte au clic fait a 
+        //a partire de bouton 
+        bouton3.addEventListener('click', function () {
+            alert("Bonjour, bienvenue sur notre libraire en ligne ?");
+        });
+
     </script>
 </body>
 
