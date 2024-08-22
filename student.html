@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des étudiants d'une école</title>
+    <style>
+        h1 {
+            background-position: center;
+            background-color: green;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Liste des etudiants de l'école</h1>
+    <button id="addStudentBtn">Aggiungi studenti</button>
+    <button id="displayStudentsBtn">Visualizza Studenti</button>
+    <button id="searchStudentsBtn">Cerca studenti</button>
+    <button id="NoteSuperieureBtn">Verificazione voti superiori a 18 o uguali degli studenti</button>
+    <script>
+        // Création de la liste d'étudiants
+        let school = [];
+
+        // Fonction fléchée pour ajouter un étudiant
+        const addStudent = (nom, prenom, age, note) => {
+            const student = { nom, prenom, age, note };
+            school.push(student);
+        };
+
+        // Fonction pour afficher les étudiants
+        const displaySchool = () => {
+            // Parcours pour afficher les résultats du nom, prénom, âge et note
+            school.forEach(student => {
+                alert(`Nom: ${student.nom}, Prénom: ${student.prenom}, Âge: ${student.age}, Note: ${student.note}`);
+            });
+        };
+
+        // Fonction pour rechercher les étudiants avec la propriété nom et prenom
+        const searchStudents = (studentsToFind) => {
+            // Création d'une liste vide pour les étudiants trouvés
+            let foundStudents = [];
+            // Parcours avec la variable studentsToFind avec la boucle forEach
+            studentsToFind.forEach(studentToFind => {
+                const foundStudent = school.find(student =>
+                    // Si les conditions sont vérifiées pour nom et prenom
+                    (student.nom === studentToFind.nom) ||
+                    (student.prenom === studentToFind.prenom)
+                );
+                // Si on a trouvé les propriétés nom et prenom, on les ajoute à la liste avec push
+                if (foundStudent) {
+                    foundStudents.push(foundStudent);
+                }
+            });
+            return foundStudents;
+        };
+
+        // Fonction pour vérifier les étudiants avec une note supérieure ou égale à 18
+        const NoteSuperieure = (studentsToNote) => {
+            // Création d'une liste vide pour les étudiants trouvés
+            let foundNotes = [];
+            // Parcours avec la variable studentsToNote avec la boucle forEach
+            studentsToNote.forEach(studentToNote => {
+                const foundNote = school.find(student =>
+                    // Si les conditions sont vérifiées pour la note, l'âge et le nom
+                    (student.note === studentToNote.note && student.note >= 18 && student.nom === studentToNote.nom)
+                );
+                // Vérifier si l'objet trouvé est défini
+                if (foundNote && foundNote.note >= 18) {
+                    foundNotes.push(foundNote);
+                }
+            });
+            return foundNotes;
+        };
+
+
+        document.getElementById('addStudentBtn').addEventListener('click', () => {
+            // Appel de la fonction addStudent pour ajouter des étudiants
+            addStudent("Carlos", "Marcello", 18, 10);
+            addStudent("Dany", "Marcello", 19, 19);
+            addStudent("Michelle", "Silvie", 20, 18);
+            addStudent("Fabrizio", "Marcello", 21, 17);
+            addStudent("Paola", "Salvino", 22, 6);
+            addStudent("Carlo", "Martano", 23, 11);
+        });
+
+        document.getElementById('displayStudentsBtn').addEventListener('click', displaySchool);
+
+        document.getElementById('searchStudentsBtn').addEventListener('click', () => {
+            // Recherche des étudiants par leur nom, prénom
+            const studentsToFind = [{ nom: "Carlos" }, { prenom: "Marcello" }];
+            const foundStudents = searchStudents(studentsToFind);
+            // Affichage des étudiants trouvés avec leur nom, prénom
+            foundStudents.forEach(foundStudent => {
+                alert(`Trouvé : Nom: ${foundStudent.nom}, Prénom: ${foundStudent.prenom}`);
+            });
+        });
+
+        document.getElementById('NoteSuperieureBtn').addEventListener('click', () => {
+            // Recherche des étudiants par leur note et nom
+            const studentToNote = [{ note: 18 }, { nom: "Marcello" }];
+            const foundNotes = NoteSuperieure(studentToNote);
+
+            // Affichage des étudiants trouvés avec leur nom et note
+            foundNotes.forEach(foundNote => {
+                alert(`Trouvé :  Note: ${foundNote.note} Nom: ${foundNote.nom}`);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
